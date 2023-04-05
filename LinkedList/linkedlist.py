@@ -38,7 +38,7 @@ class linkedList:
             self.tail = self.tail.next
             self.len += 1
 
-
+/* nisarg */
 if __name__=='__main__':
     arr = [1,2,3,4,5,6,7]
     linkd = linkedList()
