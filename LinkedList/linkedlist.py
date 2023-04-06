@@ -67,8 +67,15 @@ class linkedList:
         self.len -= 1
         return x
     
+    def delete_last(self):    #O(n) no matter what you do it will stay like this only. 
+        return self.delete_at(self.len -1 )
     
-    
+    def insert_last(self, x): #O(1) because we kept tail pointer
+        temp = node(x)
+        self.tail.next = temp
+        self.tail = temp
+        self.len += 1
+
     def printList(self):
         itr = self.head
         while(itr):
