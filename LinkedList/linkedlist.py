@@ -95,16 +95,40 @@ class linkedList:
             self.tail = self.tail.next
             self.len += 1
 
+    def reorder_students(self):   #reverses the second half of the linked list
+        n = self.len // 2 # find the n-th node
+        a = self.head
+        if not a or not a.next:
+            return a
+        for _ in range(n - 1):
+            a = a.next
+        b = a.next # relink next pointers of last half
+        c = a.next.next
+        while(c):
+            temp = c.next
+            c.next  = b
+            b = c
+            c = temp
+        a.next.next = None
+        a.next = b
+
+        return    
+
+
 if __name__=='__main__':
-    arr = [1,2,3,4,5,6,7]
+    arr = [1,2,3,4,5,6,7,8,9,10]
     linkd = linkedList()
     linkd.build(arr)
-    linkd.printList()    
-    print('length is: ', linkd.getlen())
-    print("ith element is: " ,linkd.geti(5).data)
-    print('ith node data is: ', linkd.head.later_node(5).data)
-    linkd.insert_first(0)
+    # linkd.printList()    
+    # print('length is: ', linkd.getlen())
+    # print("ith element is: " ,linkd.geti(5).data)
+    # print('ith node data is: ', linkd.head.later_node(5).data)
+    # linkd.insert_first(0)
+    # linkd.printList()
+    # linkd.getheadandtails()
+    # linkd.delete_first()
+    # print(linkd.getlen())
+    linkd.reorder_students()
     linkd.printList()
-    linkd.getheadandtails()
-    linkd.delete_first()
-    print(linkd.getlen())
+
+
