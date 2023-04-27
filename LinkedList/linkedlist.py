@@ -130,5 +130,3 @@ if __name__=='__main__':
     # print(linkd.getlen())
     linkd.reorder_students()
     linkd.printList()
-
-
