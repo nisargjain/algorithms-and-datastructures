@@ -100,4 +100,3 @@ class Doubly_Linked_List_Seq:
         temp.prev = L2.tail
         L2.head.prev = x
         L2.tail.next = temp
-
