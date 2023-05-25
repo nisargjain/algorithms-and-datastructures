@@ -1,3 +1,4 @@
+#general binary node. We can also create different augmented nodes by inheriting this base class.
 class Binary_Node:
     def __init__(A, x): # O(1)
         A.item = x
