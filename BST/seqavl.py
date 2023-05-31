@@ -134,7 +134,26 @@ if __name__=='__main__':
             A.item = (A.item + 1)%2
             A.one_update()
 
-
+        To implement count ones upto(i), we will first define the subtree-based 
+        recursive function 'subtree_count_ones_upto(A, i)' which returns the 
+        number of 1 bits in the subtree of node A that are at most index i 
+        within A's subtree. Then count ones upto(i) is symantically equivailent 
+        to subtree count ones upto(T.root, i). Since each recursive call makes at most 
+        one recursive call on a child, operation takes O(log n) time. 
           
-
+        def subtree_count_ones_upto(A,i):
+            assert 0<=i<A.size:
+            out = 0
+            if A.left:
+                if i < A.left.size:
+                    return subtree_count_ones_upto(A.left, i)
+                else:
+                    out += A.left.subtree_ones
+                    i-= A.left.size
+            out += A.item
+            if i>0:   #if still i is remaining after taking into account left subtree
+                      # and self.item then we need to go to the right
+                assert A.right
+                out += subtree_count_ones_upto(A.right, i-1)
+            return out
     """

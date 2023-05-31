@@ -1,4 +1,7 @@
 '''
+A = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
+D = [5,   3   3   3   1  1   4  1   1   1]
+
 Porkland is a community of pigs who live in n houses lined up along one side of a long, straight
 street running east to west. Every house in Porkland was built from straw and bricks, but some
 houses were built with more bricks than others. One day, a wolf arrives in Porkland and all the
@@ -9,7 +12,6 @@ every house east of it containing strictly fewer than b bricks. For every house 
 wants to know its damage, i.e., the number of houses that would fall were he to blow on it in an
 easterly direction
 
-
 (a) Suppose n = 10 and the number of bricks in each house in Porkland from west to east 
 is [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]. Compute for this instance the 
 damage for every house in Porkland. 
@@ -18,6 +20,26 @@ damage for every house in Porkland.
 containing the number of bricks in each house of Porkland, describe an O(n)-time 
 algorithm to return the damage for every house in Porkland when all but one house
 in Porkland is special. 
+
+Soln: 
+                    
+def get_damages(A):
+    d = [1]*len(A)
+
+    #finding special
+    special_index = 0
+    for i in range(len(A)):
+        if A[i]>A[i+1]:
+            special_index = i
+            break
+    
+    #finding second index
+    for t in range
+
+
+
+
+
 (c) Given an array containing the number of bricks in each house of Porkland, describe 
 an O(n log n)-time algorithm to return the damage for every house in Porkland. 
 (d) Write a Python function get damages that implements your algorithm. 
@@ -57,8 +79,8 @@ def get_damages(H):
 
 if __name__=='__main__':
 
-    arr = [1, 2, 3, 4, 3, 4, 5, 6, 7]
-   #       1, 1, 1, 2, 1, 1, 1, 1, 1
+    arr = [34, 77, 87, 2, 6, 11, 19]
+   #       5,  5,  5,  1, 1,  1,  1
     #finding special element index
     l = len(arr)
     sp = 0
