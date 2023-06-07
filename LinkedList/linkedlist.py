@@ -1,7 +1,7 @@
-class node:
+class Linked_List_Node:
     #initializes single node data structure of linked list
     def __init__(self, data):
-        self.data = data
+        self.item = data
         self.next = None
 
     #returns the ith node next to first node. will follow the general 0 indexing convention like arrays
@@ -10,93 +10,98 @@ class node:
         assert self.next
         return self.next.later_node(i-1)
 
-class linkedList:
+class Linked_List_Seq:
     def __init__(self):
         self.head = None
         self.tail = None
-        self.len = 0
+        self.size = 0
 
     def getheadandtails(self):
-        print(self.head.data)
-        print(self.tail.data)
+        print("head data is: " , self.head.item, end = ' ____ ')
+        print("tails data is : " , self.tail.item)
 
-    def getlen(self):
-        return self.len
-    
-    #or you can use the later_node function for this
-    def geti(self, i):
-        temp = self.head
-        while(i>0):
-            temp = temp.next
-            i-=1
-        return temp
+    def __len__(self): return self.size
+
+    def __iter__(self):
+        node = self.head
+        while node:
+            yield node.item
+            node = node.next
+
+    def build(self, X):
+        for a in reversed(X):
+            self.insert_first(a)
+            if self.tail is None:
+                self.tail = self.head
+
+    def get_at(self, i):
+        node = self.head.later_node(i)
+        return node.item
         
     def set_at(self, i, x):
         temp = self.head.later_node(i)
         temp.data = x
 
     def insert_first(self,x):
-        temp = node(x)
+        temp = Linked_List_Node(x)
         temp.next = self.head
         self.head = temp
-        self.len += 1    
+        self.size += 1    
+
+    def delete_first(self):
+        x = self.head.item
+        self.head = self.head.next
+        self.size -= 1
+        return x
 
     def insert_at(self,i ,x):
         if i==0:
             self.insert_first(x)
             return
-        temp = node(x)
-        previousnode = self.geti(i-1)
+        
+        if i==len(self)-1:
+            self.insert_last(x)
+            return 
+        
+        temp = Linked_List_Node(x)
+        previousnode = self.head.later_node(i-1)
         temp.next = previousnode.next
         previousnode.next = temp
-        self.len+=1
+
+        while(self.tail.next):
+            self.tail = self.tail.next
+
+        self.size += 1
 
     def delete_at(self, i):
         if i==0:
-            x = self.delete_first()
-            return x
-        previousnode = self.geti(i-1)
-        x = previousnode.next.data
+            return self.delete_first()
+        previousnode = self.later_node(i-1)
+        x = previousnode.next.item
         previousnode.next = previousnode.next.next
-        self.len -= 1
+        if (i == len(self)-1):
+            self.tail = previousnode
+        self.size -= 1
         return x
 
-    def delete_first(self):
-        x = self.head.data
-        self.head = self.head.next
-        self.len -= 1
-        return x
-    
     def delete_last(self):    #O(n) no matter what you do it will stay like this only. 
-        return self.delete_at(self.len -1 )
+        return self.delete_at(len(self) - 1)
     
     def insert_last(self, x): #O(1) because we kept tail pointer
-        temp = node(x)
+        temp = Linked_List_Node(x)
         self.tail.next = temp
         self.tail = temp
-        self.len += 1
+        self.size += 1
 
     def printList(self):
         itr = self.head
         while(itr):
-            print(itr.data, end=" ")
+            print(itr.item, end=" ")
             itr = itr.next
         print()
-        
-
-    def build(self, arr):
-        for data in arr:
-            if(not self.head):
-                self.head = node(data)
-                self.len += 1
-                self.tail = self.head
-                continue
-            self.tail.next = node(data)
-            self.tail = self.tail.next
-            self.len += 1
 
     def reorder_students(self):   #reverses the second half of the linked list
-        n = self.len // 2 # find the n-th node
+        n = len(self) // 2 # find the n-th node
         a = self.head
         if not a or not a.next:
             return a
@@ -117,16 +122,16 @@ class linkedList:
 
 if __name__=='__main__':
     arr = [1,2,3,4,5,6,7,8,9,10]
-    linkd = linkedList()
+    linkd = Linked_List_Seq()
     linkd.build(arr)
     # linkd.printList()    
-    # print('length is: ', linkd.getlen())
-    # print("ith element is: " ,linkd.geti(5).data)
-    # print('ith node data is: ', linkd.head.later_node(5).data)
+    # print('length is: ', len(linkd))
+    # print("ith element is: " ,linkd.get_at(5))
     # linkd.insert_first(0)
     # linkd.printList()
     # linkd.getheadandtails()
     # linkd.delete_first()
-    # print(linkd.getlen())
-    linkd.reorder_students()
+    # print("length now after delete is: ", len(linkd))
+    # linkd.printList()
+    # linkd.reorder_students()
     linkd.printList()

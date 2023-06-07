@@ -21,8 +21,14 @@ class Array_Seq:
     #copies the data (of size n) of self.A starting from ith index to
     # to A starting from jth index.      
     def _copy_forward(self, i, n, A, j): #O(n)
-            for k in range(n):
-                A[j+k] = self.A[i+k]
+        for k in range(n):
+            A[j+k] = self.A[i+k]
+
+            
+    #does the same as copyforward but starts copying from back
+    def _copy_backward(self, i, n, A, j):
+        for k in range(n-1, -1, -1):
+            A[j+k] = self.A[i+k]
 
     def insert_at(self, i, x):   #O(n)
         n = len(self)

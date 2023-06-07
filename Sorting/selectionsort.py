@@ -1,10 +1,9 @@
-
-
+# selecting max in subarray and swapping with last
 def selectionsort(A, i=None):      #T(i)
     '''Sort A[:i + 1]'''
     if i is None: i = len(A)- 1    #O(1)
     if i>0: 
-        j = prefix_max(A, i)        
+        j = prefix_max(A, i)       #provides us the index of max element     
         A[j], A[i] = A[i], A[j]    #O(1)
         selectionsort(A, i-1)      #T(i - 1)
 
