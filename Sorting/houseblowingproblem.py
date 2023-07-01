@@ -15,36 +15,56 @@ easterly direction
 (a) Suppose n = 10 and the number of bricks in each house in Porkland from west to east 
 is [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]. Compute for this instance the 
 damage for every house in Porkland. 
-(b) A house in Porkland is special if it either (1) has no easterly neighbor or 
-(2) its adjacent neighbor to the east contains at least as many bricks as it does. Given an array 
-containing the number of bricks in each house of Porkland, describe an O(n)-time 
-algorithm to return the damage for every house in Porkland when all but one house
-in Porkland is special. 
-
-Soln: 
-                    
-def get_damages(A):
-    d = [1]*len(A)
-
-    #finding special
-    special_index = 0
-    for i in range(len(A)):
-        if A[i]>A[i+1]:
-            special_index = i
-            break
-    
-    #finding second index
-    for t in range
+Ans:                [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
+damages for this:   [4,   5,  6,  3,  3, 1,  4, 1,  1,  1]
 
 
+(b) A house in Porkland is special if it either 
+    (1) has no easterly neighbor or 
+    (2) its adjacent neighbor to the east contains at least as many bricks as it does. Given an array 
+        containing the number of bricks in each house of Porkland, describe an O(n)-time 
+        algorithm to return the damage for every house in Porkland when all but one house
+        in Porkland is special. 
 
+Ans:  for ex: let an array (which will be increasing decrease for one element then increasing again) 
+      be [2, 5, 7, 11, 37, 9, 19, 42]
 
+      here array will be [1, 1, 1, 2, 3, 1, 1, 1]
+
+       we can note that all the numbers after special index will be 1
 
 (c) Given an array containing the number of bricks in each house of Porkland, describe 
 an O(n log n)-time algorithm to return the damage for every house in Porkland. 
+
 (d) Write a Python function get damages that implements your algorithm. 
 
 '''
+
+#part b
+
+def sub_problem(A):
+
+    d = [1]*len(A)
+
+    #finding special index
+    special_index = -1
+    for i in range(len(A)-1):
+        if A[i]>A[i+1]:
+            special_index = i
+            break
+    if special_index == -1:
+        return None
+    k = special_index+1
+    i,j = 0,k
+    while((i<k) and (j<len(A))):
+        if A[i]>A[j]:
+            d[i] += 1
+            j += 1
+        else: 
+            i+=1
+            d[i] += d[i-1] - 1
+    
+    print(d)
 
 # problem c and d
 
@@ -81,26 +101,8 @@ if __name__=='__main__':
 
     arr = [34, 77, 87, 2, 6, 11, 19]
    #       5,  5,  5,  1, 1,  1,  1
-    #finding special element index
-    l = len(arr)
-    sp = 0
-    for i in range(l-1):
-        if arr[i+1]<arr[i]:
-            sp = i+1
-            break
-    
-    #computing damages using two finger algorithm :)
+    sub_problem(arr)
 
-    damages = [1]*l
-    second = sp
-
-    for first in range(i+1):
-        while((arr[first]>arr[second]) and (second<=l-1)):
-            second += 1
-        damages[first] += second - sp
-
-    print(damages)
-
-    H = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
-    damages = get_damages(H)
-    print(damages)
+    # H = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
+    # damages = get_damages(H)
+    # print(damages)
