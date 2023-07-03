@@ -40,6 +40,7 @@ an O(n log n)-time algorithm to return the damage for every house in Porkland.
 
 '''
 
+
 #part b
 
 def sub_problem(A):
@@ -56,14 +57,14 @@ def sub_problem(A):
         return None
     k = special_index+1
     i,j = 0,k
-    while((i<k) and (j<len(A))):
+    while((i<=special_index) and (j<len(A))):
         if A[i]>A[j]:
             d[i] += 1
             j += 1
         else: 
             i+=1
             d[i] += d[i-1] - 1
-    
+
     print(d)
 
 # problem c and d
@@ -99,8 +100,8 @@ def get_damages(H):
 
 if __name__=='__main__':
 
-    arr = [34, 77, 87, 2, 6, 11, 19]
-   #       5,  5,  5,  1, 1,  1,  1
+    arr = [2, 5, 7, 11, 37, 9, 19, 42]
+    #     [1, 1, 1,  2,  3,  1, 1,  1]
     sub_problem(arr)
 
     # H = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
