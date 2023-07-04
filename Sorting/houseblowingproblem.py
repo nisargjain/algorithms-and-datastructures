@@ -40,7 +40,6 @@ an O(n log n)-time algorithm to return the damage for every house in Porkland.
 
 '''
 
-
 #part b
 
 def sub_problem(A):
@@ -54,17 +53,17 @@ def sub_problem(A):
             special_index = i
             break
     if special_index == -1:
+        print(d)
         return None
-    k = special_index+1
-    i,j = 0,k
-    while((i<=special_index) and (j<len(A))):
-        if A[i]>A[j]:
-            d[i] += 1
-            j += 1
+    a = special_index+1
+    b = len(A) - a
+    i, j = 0,0
+    while i<a:
+        if j<b and A[i]>=A[j+a]:
+            j+=1
         else: 
+            d[i] += j
             i+=1
-            d[i] += d[i-1] - 1
-
     print(d)
 
 # problem c and d
@@ -81,17 +80,59 @@ def get_damages(H):
             merge_sort(A, a, c)
             merge_sort(A, c, b)
             i, j, L, R = 0, 0, A[a:c], A[c:b]
+
             while a < b:
-                if (j >= len(R)) or (i < len(L) and L[i][0] <= R[j][0]):
+                if (j < len(R)) and (i >= len(L) or L[i][0] >= R[j][0]):
+                    A[a] = R[j]
+                    j += 1
+                    
+                else:
                     D[L[i][1]] += j
                     A[a] = L[i]
                     i += 1
-                else:
-                    A[a] = R[j]
-                    j += 1
+                    
                 a += 1
     merge_sort(H2)
     return D
+
+def test_get_damages():
+    # Test case 1: Empty list
+    H = []
+    expected = []
+    assert get_damages(H) == expected, "Test case 1 failed"
+
+    # Test case 2: Single element
+    H = [5]
+    expected = [1]
+    assert get_damages(H) == expected, "Test case 2 failed"
+
+    # Test case 3: Sorted in ascending order
+    H = [1, 2, 3, 4, 5]
+    expected = [1, 1, 1, 1, 1]
+    assert get_damages(H) == expected, "Test case 3 failed"
+
+    # Test case 4: Sorted in descending order
+    H = [5, 4, 3, 2, 1]
+    expected = [5, 4, 3, 2, 1]
+    assert get_damages(H) == expected, "Test case 4 failed"
+
+    # Test case 5: Random order
+    H = [4, 2, 5, 1, 3]
+    expected = [4, 2, 3, 1, 1]
+    assert get_damages(H) == expected, "Test case 5 failed"
+
+
+    # Test case 6: Duplicate values
+    H = [3, 2, 2, 4, 3]
+    expected = [4, 2, 1, 2, 1]
+    assert get_damages(H) == expected, "Test case 6 failed"
+
+    # Test case 7: Random Order of Question
+    H = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
+    expected = [4,   5,  6,  3,  3, 1,  4, 1,  1,  1]
+    assert get_damages(H) == expected, "Test case 7 failed"
+
+    print("All test cases passed!")
 
 
 # doing problem b
@@ -100,10 +141,10 @@ def get_damages(H):
 
 if __name__=='__main__':
 
-    arr = [2, 5, 7, 11, 37, 9, 19, 42]
-    #     [1, 1, 1,  2,  3,  1, 1,  1]
+    arr = [1,2,3,4,3,4,5,6]
     sub_problem(arr)
-
+    #main problem
+    test_get_damages()
     # H = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
     # damages = get_damages(H)
     # print(damages)
