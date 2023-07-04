@@ -82,11 +82,19 @@ def get_damages(H):
             i, j, L, R = 0, 0, A[a:c], A[c:b]
 
             while a < b:
+
+                #understand this.  We are bringing an element from the right array down. When we do that?
+                # well we can only do that if j<len(R) that is the first important condition
+                #second, either right element is smaller than 
+                # (or eqaul to because we consider that blown in question) left element or the left elements are finished 
+                #and we have to bring down the right elements. Those are the only two cases.
                 if (j < len(R)) and (i >= len(L) or L[i][0] >= R[j][0]):
                     A[a] = R[j]
                     j += 1
                     
                 else:
+                    #this the sole reason we created H2 array because since we shifted the elements, we wanted to 
+                    #know their original location to update the damages array.
                     D[L[i][1]] += j
                     A[a] = L[i]
                     i += 1
