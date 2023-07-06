@@ -6,8 +6,12 @@ import math
 def counting_sort(A):
 	u = 1 + max([x[1] for x in A])
 	D = [[] for i in range(u)]
+
+	#this will create chain for the same key values
 	for x in A:
 		D[x.key].append(x)
+
+	#then we sort it out by deconstructing the chain
 	i = 0
 	for chain in D:
 		for x in chain:
@@ -33,6 +37,7 @@ def radix_sort(A):       # for u<n^c     will take O(6nc) time
 
 	#loop c times from least significant to most significant to sort the tuples  
 	# O(nc) time complexity
+	# this is basically counting sort repeated c times
 	for tupi in range(c-1, -1, -1):
 		temp = [[] for _ in range(n)]
 		for tup in D:
@@ -44,7 +49,6 @@ def radix_sort(A):       # for u<n^c     will take O(6nc) time
 				i+=1
 
 
-
 	#reversing the c length tuple to normal #O(nc)
 	i=0
 	for tup in D:
@@ -53,7 +57,7 @@ def radix_sort(A):       # for u<n^c     will take O(6nc) time
 			A[i] = A[i]*n+t
 		i+=1
 
-
+	return A
 
 def tuple_sort(A):         # for u<n^2 
 	n = len(A)
@@ -91,6 +95,19 @@ def tuple_sort(A):         # for u<n^2
 		A[i] = tup[0]*n+tup[1]
 		i+=1
 
+def test_radix_sort():
+    input1 = [170, 45, 75, 90, 802, 24, 2, 66]
+    expected_output1 = [2, 24, 45, 66, 75, 90, 170, 802]
+    assert radix_sort(input1) == expected_output1
+
+    input2 = [321, 543, 123, 432, 654, 987, 876]
+    expected_output2 = [123, 321, 432, 543, 654, 876, 987]
+    assert radix_sort(input2) == expected_output2
+
+    input3 = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    expected_output3 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    assert radix_sort(input3) == expected_output3
+    print("All test cases passes")
 
 if __name__ == "__main__":
 	A = [100000, 99999, 99998, 99997, 99996]
@@ -103,6 +120,7 @@ if __name__ == "__main__":
 	if flag: print('Not Sorted')
 	else: print('Sorted from Tuple')
 	if not flag: print(A)
+	test_radix_sort()
 	
 
 
