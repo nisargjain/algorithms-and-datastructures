@@ -8,50 +8,78 @@ with a limited set of positive integer side lengths S = {s0, . . . , sn-1}. Help
 for the new building.
 
 Problem 4
-Unfortunately for Frehry, there is no pair of side lengths in S that sum exactly to h. 
-Assuming that h = 600n6, describe a worst-case O(n)-time algorithm to return a pair 
+
+(a) Assuming the input S fits within Θ(n) machine words, describe an expected O(n)-
+time algorithm to determine whether there exist a pair of side lengths in S that exactly 
+sum to h. 
+(b) Unfortunately for Frehry, there is no pair of side lengths in S that sum exactly to h. 
+Assuming that h = 600n^6, describe a worst-case O(n)-time algorithm to return a pair 
 of side lengths in S whose sum is closest to h without going over.
 
 '''
 
+# we do part a) first
 
-def twosum(A, S):
-    n = len(A)
-    i = 0
+def twosum(S, h):
+    #let H be empty hash set
+    H = set()
+    for num in S:
+        remainder = h-num
+        if remainder in H:
+            print("The required sum can be formed by ({}, {})".format(num, remainder))
+            return
+        else: 
+            H.add(num)
+    print("No such sum is possible")
+    return False
+    
+import sys
+sys.path.append('../Sorting')
+from linearsorting import radix_sort
+def maxtwosum(S, h):
+
+    #since h = O(n^6) we remove all the elements greater than h in S. Then the remaining
+    #set S' will now have elements of order n^6 only. which is good since we can use radix sort
+    #on it.
+
+    newS = []
+    for num in S:
+        if num<h:
+            newS.append(num)
+    
+    radix_sort(newS)
+
+    #now since our array is sorted now, we can use two finger algorithm starting from both ends of 
+    #our array to find maximum sum less than h
+    n = len(newS)
+    i = 0  #first pointer
     j = n-1
+
     maxsum = 0
-    index= [0,0]
+    indexes = [0,0]
     while(i<j):
-        sum = A[i] + A[j]
-        if sum <= S:
-            if sum > maxsum:
-                index[0], index[1] = i , j
-                maxsum = sum
-            i += 1
+        currentsum = newS[i] + newS[j]
+        if (currentsum < h):  #we go in if less than h
+            if (currentsum>maxsum):  #change indeces only if our max sum is less than current sum
+                maxsum = currentsum
+                indexes[0], indexes[1] = i, j
+            #if current sum is less than maxsum then we need not change anything, we need to increase the
+            #total sum which anyways we happen when we increment i. i is changing regardless.
+            i+=1
         else:
-            j -=1
-    return index
+            j -= 1
+    if indexes == [0,0]:
+        return False
+    else:
+        return (newS[indexes[0]], newS[indexes[1]])
+
 
 if __name__ == '__main__':
 
     B = [1, 2, 7, 19, 57, 64, 79, 91, 124, 139]
-    sumneeded = 151
-    
+    h = 125
     #test for the sum problem
-    n = len(B)
-    maxsum = 0
-    index = [0,0]
-    for i in range(n):
-        for j in range(i, n):
-            temp = B[i]+B[j]
-            if (temp <= sumneeded) and temp>maxsum:
-                maxsum = temp
-                index[0], index[1] = i , j
-    print(index, maxsum, sep='    ')
-
-    #res = problem4(B, sumneeded)    #code for the two finger algorithm where we pass in sorted array to find
-                    #pair with max two sum.
-
-    #print(res)
+    twosum(B,h)
+    print("maxsum possible is from: ", maxtwosum(B, 122)) #output should be 57 and 64 as they sum to 121.
 
 
