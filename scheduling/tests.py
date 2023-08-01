@@ -1,5 +1,5 @@
 import unittest
-from satisfying_booking     import satisfying_booking
+from beaverbookings     import satisfying_booking
 
 tests = (
     (
