@@ -91,9 +91,6 @@ class Binary_Tree:
                 yield A.item
 
 
-
-
-
 '''
 Exercise 1. Given an array of items A = (a0, . . . , an-1), 
 describe a O(n)-time algorithm to construct a binary tree T 

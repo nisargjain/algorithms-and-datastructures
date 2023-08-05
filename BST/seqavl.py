@@ -5,7 +5,7 @@ class Size_Node(Binary_Node):
 
     def subtree_update(A):
         super().subtree_update()
-        A.size = 1
+        A.size = 1            # here we created a size parameter on the go. HOW??
         if A.left: A.size += A.left.size
         if A.right: A.size += A.right.size
     

@@ -20,6 +20,12 @@ class Binary_Node:
     def skew(A):            #O(1)
         return height(A.right) - height(A.left)
     
+    def printTree(node, level=0):
+        if node != None:
+            if node.right is not None: node.right.printTree(level + 1)
+            print(' ' * 4 * level + '-> ' + str(node.item.key))
+            if node.left is not None:   node.left.printTree(level + 1)
+    
     def subtree_iter(A):
         if A.left: yield A.left.subtree_iter()
         yield A
