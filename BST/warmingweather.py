@@ -17,7 +17,7 @@ A.item with a date property A.item.key and temperature property A.item.temp.
 
 '''
 
-from set_avl import BST_set, Set_Binary_Tree
+from set_avl import AVL_Set_Node, Set_AVL_Tree
 
 
 class Measurement:
@@ -26,15 +26,17 @@ class Measurement:
         self.temp = temp
     def __str__(self): return "%s,%s" % (self.key, self.temp)
 
-class Temperature_DB_Node(BST_set):
+class Temperature_DB_Node(AVL_Set_Node):
 
     def subtree_update(A):
         super().subtree_update()
         A.max_temp = A.item.temp
-        A.min_date = A.max_date = A.item.key
+        A.min_date = A.max_date = A.item.key   #we kept it key because our code runs on key
+        A.max_temp = A.item.temp
         if A.left:
             A.min_date = A.left.min_date
             A.max_temp = max(A.max_temp, A.left.max_temp)
+            
         if A.right:
             A.max_date = A.right.max_date
             A.max_temp = max(A.max_temp, A.right.max_temp)

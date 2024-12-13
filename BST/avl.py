@@ -27,9 +27,9 @@ class Binary_Node:
             if node.left is not None:   node.left.printTree(level + 1)
     
     def subtree_iter(A):
-        if A.left: yield A.left.subtree_iter()
+        if A.left: yield from A.left.subtree_iter()
         yield A
-        if A.right: yield A.right.subtree_iter()
+        if A.right: yield from A.right.subtree_iter()
 
     def subtree_first(A):
         if A.left: return A.left.subtree_first()

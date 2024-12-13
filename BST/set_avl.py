@@ -1,7 +1,5 @@
 from avl import Binary_Node
 from bst_set import keyvaluepair
-from bst import Binary_Tree
-
 
 class AVL_Set_Node(Binary_Node):
 
@@ -59,13 +57,22 @@ class AVL_Set_Node(Binary_Node):
 
 
 
-class Set_Binary_Tree(Binary_Tree): # Binary Search Tree
+class Set_AVL_Tree(): # Binary AVL Search Tree
 
-    #initializing parent class initializer
-    def __init__(self): super().__init__(AVL_Set_Node)
-
-    def iter_order(self): yield from self.__iter__()
+    def __init__(T, Node_Type = AVL_Set_Node):
+        T.root = None
+        T.size = 0
+        T.Node_Type = Node_Type
     
+    def __len__(T): return T.size
+    
+    def __iter__(T):
+        if T.root:
+            for A in T.root.subtree_iter():
+                yield A.item
+
+    def iter_order(self): yield from iter(self)
+
     def build(self,X):
         for x in X: self.insert(x)
 
@@ -112,9 +119,8 @@ class Set_Binary_Tree(Binary_Tree): # Binary Search Tree
 
 
 if __name__ == "__main__":
-    tree = Set_Binary_Tree()
+    tree = Set_AVL_Tree()
     tree.build([keyvaluepair(1,0), keyvaluepair(2,0),keyvaluepair(3,0),keyvaluepair(4,0), keyvaluepair(5,0), keyvaluepair(6,0) ])
     tree.root.printTree()
     for n in tree.iter_order():
-        print(type(n))
-    #     print(str(n.key) + " "+ str(n.value))
+        print(str(n.key) + " "+ str(n.value))
