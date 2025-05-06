@@ -7,7 +7,7 @@ def Set_from_Seq(seq):  #seq is any sequence interface class such as Linked list
         def build(self, A):
                 self.S.build(A)        
         def insert(self, x):  #O(i) not efficient we'll use hashing to improve performance
-            for i in range(len(self.S)):
+            for i in range(len(self)):
                 if self.S.get_at(i).key == x.key:
                     self.S.set_at(i, x)
                     return

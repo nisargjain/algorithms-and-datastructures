@@ -24,6 +24,10 @@ class Array_Seq:
         for k in range(n):
             A[j+k] = self.A[i+k]
 
+    def printseq(self):
+        for ele in self.A:
+            print(ele, end =' ')
+        print()
             
     #does the same as copyforward but starts copying from back
     def _copy_backward(self, i, n, A, j):
