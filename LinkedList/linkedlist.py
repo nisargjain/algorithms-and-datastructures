@@ -59,10 +59,14 @@ class Linked_List_Seq:
             self.insert_first(x)
             return
         
-        if i==len(self)-1:
+        if i==len(self):
             self.insert_last(x)
             return 
         
+        if (i < 0) or (i > self.size):
+            print("Not possible bro")
+            return
+
         temp = Linked_List_Node(x)
         previousnode = self.head.later_node(i-1)
         temp.next = previousnode.next
@@ -76,11 +80,9 @@ class Linked_List_Seq:
     def delete_at(self, i):
         if i==0:
             return self.delete_first()
-        previousnode = self.later_node(i-1)
+        previousnode = self.head.later_node(i-1)
         x = previousnode.next.item
         previousnode.next = previousnode.next.next
-        if (i == len(self)-1):
-            self.tail = previousnode
         self.size -= 1
         return x
 

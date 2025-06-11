@@ -4,7 +4,7 @@ from array_seq import Array_Seq
 
 class Dynamic_Array_Seq(Array_Seq):
     def __init__(self, r=2):   #r here is NOT the same as fill ratio in notes
-        super.__init__() #self.A = [] and #self.size (which will be overridden from current class)
+        super().__init__() #self.A = [] and #self.size (which will be overridden from current class)
         self.size = 0   #size will be the actual array size
         self.r= r
         self._compute_bounds()
