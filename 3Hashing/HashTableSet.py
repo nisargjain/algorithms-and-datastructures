@@ -1,4 +1,6 @@
 from Set_From_Sequence import Set_from_Seq
+import sys
+sys.path.append("C:\\Code\\algorithms-and-datastructures\\1LinkedList\\")
 from linkedlist import Linked_List_Seq
 from random import randint
 

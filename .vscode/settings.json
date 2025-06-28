@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./Sorting"
+        "./Sorting",
+        "./1LinkedList"
     ]
 }

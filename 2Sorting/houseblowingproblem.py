@@ -1,6 +1,5 @@
 '''
-A = [34, 57, 70, 19, 48, 2, 94, 7, 63, 75]
-D = [5,   3   3   3   1  1   4  1   1   1]
+
 
 Porkland is a community of pigs who live in n houses lined up along one side of a long, straight
 street running east to west. Every house in Porkland was built from straw and bricks, but some
@@ -21,7 +20,8 @@ damages for this:   [4,   5,  6,  3,  3, 1,  4, 1,  1,  1]
 
 (b) A house in Porkland is special if it either 
     (1) has no easterly neighbor or 
-    (2) its adjacent neighbor to the east contains at least as many bricks as it does. Given an array 
+    (2) its adjacent neighbor to the east contains at least as many bricks as it does. 
+Given an array 
         containing the number of bricks in each house of Porkland, describe an O(n)-time 
         algorithm to return the damage for every house in Porkland when all but one house
         in Porkland is special. 

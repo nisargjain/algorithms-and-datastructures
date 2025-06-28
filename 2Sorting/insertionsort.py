@@ -17,5 +17,6 @@ def insert(A, i):               #S(i)
 
 if __name__=="__main__":
     A = [3,15,657,8,2,34,7, 13 , 4, 7, 1]
+    print("unsorted array: ", A)
     insertionsort(A)
-    print(A)
+    print("sorted array: ", A)
