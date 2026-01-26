@@ -71,8 +71,8 @@ def tuple_sort(A):         # for u<n^2
 	D2 = [[] for _ in range(n)]
 	for tup in D:
 		D2[tup[1]].append(tup)
+	
 	i=0
-
 	for chain in D2:          #iterating for sorting takes O(n) time
 		for tup in chain:
 			D[i] = tup
