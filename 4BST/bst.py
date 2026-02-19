@@ -46,7 +46,7 @@ class Binary_Node:
 
         if  A.left:
             A = A.left.subtree_last()
-            A.left, B.parent = B, A
+            A.right, B.parent = B, A
         else:
             A.left, B.parent = B, A
 
@@ -54,10 +54,10 @@ class Binary_Node:
 
         if A.right:
             A = A.right.subtree_first()
-            A.right, B.parent    =   B, A
+            A.left, B.parent    =   B, A
 
         else:
-            A.right, B.parent = B, A
+            A.right , B.parent = B, A
 
     def subtree_delete(A):
 
