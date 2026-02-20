@@ -20,11 +20,11 @@ class Binary_Node:
     def skew(A):            #O(1)
         return height(A.right) - height(A.left)
     
-    def printTree(node, level=0):
-        if node != None:
-            if node.right is not None: node.right.printTree(level + 1)
-            print(' ' * 4 * level + '-> ' + str(node.item.key))
-            if node.left is not None:   node.left.printTree(level + 1)
+    def printTree(self, level=0):
+        if self != None:
+            if self.right is not None: self.right.printTree(level + 1)
+            print(' ' * 4 * level + '-> ' + str(self.item.key))
+            if self.left is not None:   self.left.printTree(level + 1)
     
     def subtree_iter(A):
         if A.left: yield from A.left.subtree_iter()
@@ -128,8 +128,8 @@ class Binary_Node:
         C, E = D.left, D.right
         B, D = D, B
         B.item, D.item = D.item, B.item
-        B.right, D.right = C,E
-        B.left, D.left = A,B
+        D.left, D.right = B,E
+        B.left, B.right = A,C
         if A: A.parent = B
         if E: E.parent = D
         B.subtree_update()
@@ -153,3 +153,112 @@ class Binary_Node:
         A.subtree_update()
         if A.parent: A.parent.maintain()
 
+
+if __name__ == "__main__":
+    # Minimal test harness for Binary_Node (AVL) functionality.
+    class Item:
+        def __init__(self, key):
+            self.key = key
+        def __repr__(self):
+            return f"Item({self.key})"
+
+    def get_root(node):
+        if node is None: return None
+        while node.parent:
+            node = node.parent
+        return node
+
+    def bst_insert(root, key):
+        new = Binary_Node(Item(key))
+        if root is None:
+            return new
+        node = root
+        while True:
+            if key < node.item.key:
+                if node.left:
+                    node = node.left
+                else:
+                    node.left = new
+                    new.parent = node
+                    break
+            else:
+                if node.right:
+                    node = node.right
+                else:
+                    node.right = new
+                    new.parent = node
+                    break
+        if new.parent:
+            new.parent.maintain()
+        return get_root(new)
+
+    def bst_find(root, key):
+        node = root
+        while node:
+            if key == node.item.key:
+                return node
+            node = node.left if key < node.item.key else node.right
+        return None
+
+    def inorder_keys(root):
+        if root is None: return []
+        return [n.item.key for n in root.subtree_iter()]
+
+    def print_state(step, root):
+        print(f"\n--- {step} ---")
+        if root:
+            root.printTree()
+            print("inorder:", inorder_keys(root))
+        else:
+            print("<empty tree>")
+
+    # Test sequences to trigger AVL cases
+    sequences = {
+        "RR (10,20,30)": [10,20,30],
+        "LL (30,20,10)": [30,20,10],
+        "RL (10,30,20)": [10,30,20],
+        "LR (30,10,20)": [30,10,20],
+    }
+
+    for name, seq in sequences.items():
+        root = None
+        print(f"\n==== Testing {name} ====")
+        for i,k in enumerate(seq, start=1):
+            root = bst_insert(root, k)
+            print_state(f"after insert {k}", root)
+
+    # More extensive insertion to build bigger tree and test successor/predecessor
+    root = None
+    keys = [50,30,70,20,40,60,80,10,25,35,45]
+    print("\n==== Inserting larger set ====")
+    for k in keys:
+        root = bst_insert(root, k)
+        print_state(f"after insert {k}", root)
+
+    # test successor / predecessor / first / last
+    for test_key in [20,30,50,80]:
+        node = bst_find(root, test_key)
+        print(f"\nnode {test_key}: found={bool(node)}")
+        if node:
+            succ = node.successor()
+            pred = node.predecessor()
+            print(" successor:", succ.item.key if succ else None)
+            print(" predecessor:", pred.item.key if pred else None)
+
+    first = root.subtree_first()
+    last = root.subtree_last()
+    print("\nfirst:", first.item.key, "last:", last.item.key)
+
+    # Test deletions: leaf, node with one child, node with two children
+    print("\n==== Deletions ====")
+    for del_key in [10, 30, 50]:
+        node = bst_find(root, del_key)
+        print(f"\nDeleting {del_key}, found={bool(node)}")
+        if node:
+            removed = node.subtree_delete()
+            root = get_root(node.parent) if node.parent else None
+            print_state(f"after delete {del_key}", root)
+        else:
+            print(" not found")
+
+    print("\nAll tests completed.")
