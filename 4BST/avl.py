@@ -1,5 +1,8 @@
 
 #defining binary tree with avl balancing
+##is defined as a free function so it can 
+# safely handle None without needing an object,
+#  and to avoid repeating if node is None:
 
 def height(A): 
     if A: return A.height
@@ -12,7 +15,8 @@ class Binary_Node:
         A.left = None
         A.right = None
         A.parent = None 
-        A.subtree_update()
+        A.subtree_update()  
+        ## this actually created height attribute at first time, so we can use it in height function
 
     def subtree_update(A):
         A.height = 1 + max(height(A.left), height(A.right))
@@ -23,9 +27,9 @@ class Binary_Node:
     def printTree(self, level=0):
         if self != None:
             if self.right is not None: self.right.printTree(level + 1)
-            print(' ' * 4 * level + '-> ' + str(self.item.key))
+            print(' ' * 4 * level + '-> ' + str(self.item))
             if self.left is not None:   self.left.printTree(level + 1)
-    
+
     def subtree_iter(A):
         if A.left: yield from A.left.subtree_iter()
         yield A
@@ -155,110 +159,72 @@ class Binary_Node:
 
 
 if __name__ == "__main__":
-    # Minimal test harness for Binary_Node (AVL) functionality.
-    class Item:
-        def __init__(self, key):
-            self.key = key
-        def __repr__(self):
-            return f"Item({self.key})"
+    print("=== right-chain inserts ===")
+    root = Binary_Node(10)
+    root.printTree()
+    print("=======================================")
+    root.subtree_insert_after(Binary_Node(20))
+    root.printTree()
+    print("=======================================")
+    root.right.subtree_insert_after(Binary_Node(30))
+    root.printTree()
+    print("=======================================")
+    root.right.subtree_insert_after(Binary_Node(40))
+    root.printTree()
+    print("=======================================")
+    root.right.right.subtree_insert_after(Binary_Node(50))
+    root.printTree()
+    print("=======================================\n")
 
-    def get_root(node):
-        if node is None: return None
-        while node.parent:
-            node = node.parent
-        return node
+    print("=== insert before/after ===")
+    root2 = Binary_Node(15)
+    root2.subtree_insert_before(Binary_Node(5))
+    root2.subtree_insert_after(Binary_Node(25))
+    root2.printTree()
+    print("successor of 15:", root2.successor().item)
+    print("predecessor of 15:", root2.predecessor().item)
+    print("first:", root2.subtree_first().item, "last:", root2.subtree_last().item)
+    print("=======================================\n")
 
-    def bst_insert(root, key):
-        new = Binary_Node(Item(key))
-        if root is None:
-            return new
-        node = root
-        while True:
-            if key < node.item.key:
-                if node.left:
-                    node = node.left
-                else:
-                    node.left = new
-                    new.parent = node
-                    break
-            else:
-                if node.right:
-                    node = node.right
-                else:
-                    node.right = new
-                    new.parent = node
-                    break
-        if new.parent:
-            new.parent.maintain()
-        return get_root(new)
+    print("=== delete leaf then root ===")
+    root3 = Binary_Node(10)
+    root3.subtree_insert_before(Binary_Node(5))
+    root3.subtree_insert_after(Binary_Node(20))
+    root3.printTree()
+    print("delete leaf (right)")
+    root3.right.subtree_delete()
+    root3.printTree()
+    print("delete current root")
+    root3.subtree_delete()
+    root3.printTree()
+    print("=======================================\n")
 
-    def bst_find(root, key):
-        node = root
-        while node:
-            if key == node.item.key:
-                return node
-            node = node.left if key < node.item.key else node.right
-        return None
+    print("=== direct rotate left then right ===")
+    rot = Binary_Node(10)
+    rot.right = Binary_Node(20); rot.right.parent = rot
+    rot.right.right = Binary_Node(30); rot.right.right.parent = rot.right
+    rot.subtree_update()
+    print("before rotate_left:")
+    rot.printTree()
+    rot.subtree_rotate_left()
+    print("after rotate_left:")
+    rot.printTree()
+    rot2 = Binary_Node(20)
+    rot2.left = Binary_Node(10); rot2.left.parent = rot2
+    rot2.left.left = Binary_Node(5); rot2.left.left.parent = rot2.left
+    rot2.subtree_update()
+    print("before rotate_right:")
+    rot2.printTree()
+    rot2.subtree_rotate_right()
+    print("after rotate_right:")
+    rot2.printTree()
+    print("=======================================\n")
 
-    def inorder_keys(root):
-        if root is None: return []
-        return [n.item.key for n in root.subtree_iter()]
-
-    def print_state(step, root):
-        print(f"\n--- {step} ---")
-        if root:
-            root.printTree()
-            print("inorder:", inorder_keys(root))
-        else:
-            print("<empty tree>")
-
-    # Test sequences to trigger AVL cases
-    sequences = {
-        "RR (10,20,30)": [10,20,30],
-        "LL (30,20,10)": [30,20,10],
-        "RL (10,30,20)": [10,30,20],
-        "LR (30,10,20)": [30,10,20],
-    }
-
-    for name, seq in sequences.items():
-        root = None
-        print(f"\n==== Testing {name} ====")
-        for i,k in enumerate(seq, start=1):
-            root = bst_insert(root, k)
-            print_state(f"after insert {k}", root)
-
-    # More extensive insertion to build bigger tree and test successor/predecessor
-    root = None
-    keys = [50,30,70,20,40,60,80,10,25,35,45]
-    print("\n==== Inserting larger set ====")
-    for k in keys:
-        root = bst_insert(root, k)
-        print_state(f"after insert {k}", root)
-
-    # test successor / predecessor / first / last
-    for test_key in [20,30,50,80]:
-        node = bst_find(root, test_key)
-        print(f"\nnode {test_key}: found={bool(node)}")
-        if node:
-            succ = node.successor()
-            pred = node.predecessor()
-            print(" successor:", succ.item.key if succ else None)
-            print(" predecessor:", pred.item.key if pred else None)
-
-    first = root.subtree_first()
-    last = root.subtree_last()
-    print("\nfirst:", first.item.key, "last:", last.item.key)
-
-    # Test deletions: leaf, node with one child, node with two children
-    print("\n==== Deletions ====")
-    for del_key in [10, 30, 50]:
-        node = bst_find(root, del_key)
-        print(f"\nDeleting {del_key}, found={bool(node)}")
-        if node:
-            removed = node.subtree_delete()
-            root = get_root(node.parent) if node.parent else None
-            print_state(f"after delete {del_key}", root)
-        else:
-            print(" not found")
-
-    print("\nAll tests completed.")
+    print("=== height and skew checks ===")
+    node = Binary_Node(1)
+    print("height(None):", height(None))
+    print("height(node):", height(node))
+    print("skew(node):", node.skew())
+    node.subtree_insert_after(Binary_Node(2))
+    print("after insert, height(node):", height(node), "skew(node):", node.skew())
+    print("=======================================\n")
