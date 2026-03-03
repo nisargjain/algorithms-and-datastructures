@@ -24,7 +24,7 @@ class BST_set(bst.Binary_Node):
     def subtree_find_next(A,k):
         
         if A.item.key <= k:
-            if A.right: A.right.subtree_find_next(k)
+            if A.right: return A.right.subtree_find_next(k)
             else: return None
         elif A.left:
             B= A.left.subtree_find_next(k)
@@ -34,7 +34,7 @@ class BST_set(bst.Binary_Node):
     def subtree_find_prev(A,k):
         
         if A.item.key >=k:
-            if A.left: A.left.subtree_find_prev(k)
+            if A.left: return A.left.subtree_find_prev(k)
             else: return None
 
         elif A.right:
@@ -110,10 +110,3 @@ class Set_Binary_Tree(bst.Binary_Tree): # Binary Search Tree
         if ext.parent is None: self.root = None
         self.size -=1
         return ext.item
-
-
-if __name__ == "__main__":
-    tree = Set_Binary_Tree()
-    tree.build([keyvaluepair(4,0), keyvaluepair(3,0),keyvaluepair(8,0),keyvaluepair(6,0), keyvaluepair(10,0)])
-    for n in tree.iter_order():
-        print(str(n.key) + " "+ str(n.value))

@@ -109,8 +109,8 @@ class Binary_Node:
         D.item, B.item = B.item, D.item  #doing this to prevent checking and changing parent pointers of D
         D,B = B,D                      #changing pointers to correctly represent
         '''
-                _____<B>__                                  __<B>_____                                
-            __<D>__    <E>                               <A>   __<D>__              
+                _____<D>__                                  __<B>_____                                
+            __<B>__    <E>                               <A>   __<D>__              
             <A>   <C>   / \            to make            / \  <C>   <E>                                    
             / \   / \  /___\                             /___\ / \   / \             
             /___\ /___\                                        /___\ /___\        
@@ -175,56 +175,31 @@ if __name__ == "__main__":
     root.right.right.subtree_insert_after(Binary_Node(50))
     root.printTree()
     print("=======================================\n")
-
+    print(root.subtree_first().item, root.right.subtree_first().item)
+    print("==========================================\n")
+    print(root.successor().item, root.predecessor().item)
+    print("==========================================\n")
     print("=== insert before/after ===")
-    root2 = Binary_Node(15)
-    root2.subtree_insert_before(Binary_Node(5))
-    root2.subtree_insert_after(Binary_Node(25))
-    root2.printTree()
-    print("successor of 15:", root2.successor().item)
-    print("predecessor of 15:", root2.predecessor().item)
-    print("first:", root2.subtree_first().item, "last:", root2.subtree_last().item)
-    print("=======================================\n")
+    for x in root.subtree_iter():
+        print(x.item, end=' ')
+    print()
+    root.right.subtree_insert_before(Binary_Node(5))
+    root.printTree()
+    for x in root.subtree_iter():
+        print(x.item, end=' ')
+    print()
+    print("========================================\n")
+    root.left.left.subtree_insert_after(Binary_Node(15))
+    root.printTree()
+    for x in root.subtree_iter():
+        print(x.item, end=' ')
+    print()
+    print("========================================\n")
 
-    print("=== delete leaf then root ===")
-    root3 = Binary_Node(10)
-    root3.subtree_insert_before(Binary_Node(5))
-    root3.subtree_insert_after(Binary_Node(20))
-    root3.printTree()
-    print("delete leaf (right)")
-    root3.right.subtree_delete()
-    root3.printTree()
-    print("delete current root")
-    root3.subtree_delete()
-    root3.printTree()
-    print("=======================================\n")
-
-    print("=== direct rotate left then right ===")
-    rot = Binary_Node(10)
-    rot.right = Binary_Node(20); rot.right.parent = rot
-    rot.right.right = Binary_Node(30); rot.right.right.parent = rot.right
-    rot.subtree_update()
-    print("before rotate_left:")
-    rot.printTree()
-    rot.subtree_rotate_left()
-    print("after rotate_left:")
-    rot.printTree()
-    rot2 = Binary_Node(20)
-    rot2.left = Binary_Node(10); rot2.left.parent = rot2
-    rot2.left.left = Binary_Node(5); rot2.left.left.parent = rot2.left
-    rot2.subtree_update()
-    print("before rotate_right:")
-    rot2.printTree()
-    rot2.subtree_rotate_right()
-    print("after rotate_right:")
-    rot2.printTree()
-    print("=======================================\n")
-
-    print("=== height and skew checks ===")
-    node = Binary_Node(1)
-    print("height(None):", height(None))
-    print("height(node):", height(node))
-    print("skew(node):", node.skew())
-    node.subtree_insert_after(Binary_Node(2))
-    print("after insert, height(node):", height(node), "skew(node):", node.skew())
+    print("=== delete root ===")
+    root.subtree_delete()
+    root.printTree()
+    for x in root.subtree_iter():
+        print(x.item, end=' ')
+    print()
     print("=======================================\n")
