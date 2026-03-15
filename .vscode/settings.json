@@ -1,8 +1,4 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:conda",
-    "python-envs.defaultPackageManager": "ms-python.python:conda",
-    "python-envs.terminal.autoActivationType": "off",
-    "python.analysis.extraPaths": [
-        "./4BST"
-    ]
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
 }
