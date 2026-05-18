@@ -1,3 +1,4 @@
+from collections import deque
 def solve_tilt(B, t):
     '''
     Input:  B | Starting board configuration
@@ -5,10 +6,34 @@ def solve_tilt(B, t):
     Output: M | List of moves that solves B (or None if B not solvable)
     '''
     M = []
-    ##################
-    # YOUR CODE HERE #
-    ##################
-    return M
+    tx, ty = t
+    if B[ty][tx] == "o":
+        return []
+    frontier = deque([(B, None)])
+    parent = {B: None}
+    flag = True
+    currstate, nextstate  = None, None
+    while (len(frontier)>0) and flag:
+        currstate = frontier.popleft()
+        for dir in ["up", "down", "left", "right"]:
+            nextstate = move(currstate[0], dir)
+            if nextstate not in parent:
+                frontier.append((nextstate, dir))
+                parent[nextstate] = (currstate[0], dir)
+            if nextstate[ty][tx] == "o":
+                flag = False
+                break
+    # print(parent)
+    # print(parent[nextstate])
+    if flag:
+        return None
+    path = []
+    while parent[nextstate] is not None:
+        parent_board, move_taken = parent[nextstate]
+        path.append(move_taken)
+        nextstate = parent_board # Safely update nextstate to be a board again
+    path.reverse()
+    return path
 
 ####################################
 # USE BUT DO NOT MODIFY CODE BELOW #
@@ -16,7 +41,7 @@ def solve_tilt(B, t):
 def move(B, d):
     '''
     Input:  B  | Board configuration
-            d  | Direction: either 'up', down', 'left', or 'right'
+            d  | Direction: either 'up', 'down', 'left', or 'right'
     Output: B_ | New configuration made by tilting B in direction d
     '''
     n = len(B)
